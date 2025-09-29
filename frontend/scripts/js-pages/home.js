@@ -577,7 +577,7 @@ async function renderUserList() {
                         <img class="user-tag-logo" src="./assets/icons/userRoleIcon${getRoleNumber(user.role)}.svg" alt="tag">
                         <span class="user-tag-text text-um${getRoleNumber(user.role)}">${enumToDisplay(user.role)}</span>
                     </div>
-                    <img class="change-role" src="./assets/icons/change-role.svg" alt="change role"></img>
+                    <img class="change-role" src="./assets/icons/change-role.svg" alt="change role">
                 </div>
             </div>
             `;
