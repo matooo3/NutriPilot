@@ -590,7 +590,7 @@
     min-width: 0;
 }
 
-#user-role {
+.user-role {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -625,32 +625,32 @@
 /* ---------------------- USER MANAGEMENT ------------------------ */
 /* --------------------------------------------------------------- */
 /* user */
-#card-um1 {
+.card-um1 {
     border: solid 1px var(--positive-border-color);
     background-color: var(--positive-fill-color);
 }
 
-#text-um1 {
+.text-um1 {
     color: var(--positive-color);
 }
 
 /* cook */
-#card-um2 {
+.card-um2 {
     border: solid 1px var(--border-color-cook);
     background-color: var(--background-color-cook);
 }
 
-#text-um2 {
+.text-um2 {
     color: #7F8DFF;
 }
 
 /* admin */
-#card-um3 {
+.card-um3 {
     border: solid 1px var(--border-color-admin);
     background-color: var(--background-color-admin);
 }
 
-#text-um3 {
+.text-um3 {
     color: var(--accent-color);
 }
 
@@ -659,7 +659,7 @@
 /* --------------------------------------------------------------- */
 
 
-#change-role {
+.change-role {
     width: 12px;
     height: 12px;
     background-color: var(--h1-color);
