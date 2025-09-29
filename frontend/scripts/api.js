@@ -2,7 +2,7 @@
 // const apiBaseUrl = 'http://172.18.45.1:3000'; // DIREKT
 const apiBaseUrl = 'https://nutripilot.ddns.net:443/api'; // PER REVERSE PROXY
 // const apiBaseUrl = `${window.location.protocol}//${window.location.hostname}:3000`;
-
+import * as Auth from './auth.js';
 import * as nativeSw from './native/nativeSw.js';
 
 // global port
@@ -84,7 +84,7 @@ export async function fetchData(endpoint) {
 
 // }
 
-export async function fetchDataWithToken(endpoint, token) {
+export async function fetchDataWithToken(endpoint, token, { skipCheck = false } = {}) {
   try {
     console.log(`[fetchDataWithToken] ➜ Endpoint: ${endpoint}, Token:`, token);
 
@@ -97,10 +97,16 @@ export async function fetchDataWithToken(endpoint, token) {
 
     console.log(`[fetchDataWithToken] ⇐ Status: ${response.status}`);
 
+    // if (response.status === 403) {
+    //   // Token abgelaufen oder ungültig
+    //   console.log("403");
+    //   throw new Error('403'); // ❗ bewusst nur "403", damit es im catch erkannt wird
+    // }
     if (response.status === 403) {
-      // Token abgelaufen oder ungültig
-      console.log("403");
-      throw new Error('403'); // ❗ bewusst nur "403", damit es im catch erkannt wird
+      if (!skipCheck) {
+        await Auth.checkSessionTokenValid(); // nur wenn nicht im Check selbst
+      }
+      throw new Error("403");
     }
 
     if (!response.ok) {

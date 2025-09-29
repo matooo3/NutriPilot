@@ -181,7 +181,7 @@ export async function checkSessionTokenValid() {
   }
 
   try {
-    const response = await Api.fetchDataWithToken("/check-token", token);
+    const response = await Api.fetchDataWithToken("/check-token", token, { skipCheck: true });    
 
     if (!response) {
       console.warn(
