@@ -585,7 +585,7 @@ async function renderUserList() {
             userListContainer.appendChild(userItem);
         });
         } catch (e) {
-            console.error("Fail in creating user list: ERROR_CODE:", e);
+            console.error("Failed to create user list: ERROR_CODE:", e);
         }
 
     // Update the total users count
