@@ -144,9 +144,9 @@ function renderUserGreeting() {
             <span class="roboto">Hi,</span>
             <span class="roboto">${user.username}</span>
         </div>
-        <div id="card-um${getRoleNumber(user.role)}" class="tag">
+        <div class="tag card-um${getRoleNumber(user.role)}">
             <img class="tag-logo" src="./assets/icons/userRoleIcon${getRoleNumber(user.role)}.svg" alt="tag">
-            <span id="text-um${getRoleNumber(user.role)}" class="tag-text">${enumToDisplay(user.role)}</span>
+            <span class="tag-text text-um${getRoleNumber(user.role)}">${enumToDisplay(user.role)}</span>
         </div>
         `;
     }
@@ -523,52 +523,70 @@ function displayToEnum(display) {
     if (display === "Admin") return "admin";
 }
 
+// function getInitials(name) {
+//     return name
+//         .split(" ")
+//         .map(part => part[0].toUpperCase())
+//         .join("")
+//         .slice(0, 2);
+// }
 function getInitials(name) {
+    if (!name || typeof name !== "string") return "?";
+
     return name
+        .trim()
         .split(" ")
+        .filter(part => part.length > 0)
         .map(part => part[0].toUpperCase())
         .join("")
         .slice(0, 2);
 }
+
 // ----------------------------------------------------
 //
 
 //
 // ----------- RENDER USER MANAGEMENT LIST ------------
 async function renderUserList() {
+    
     const userListContainer = document.getElementById("user-list");
     userListContainer.innerHTML = "";
 
     const users = await Storage.getUsers();
 
-    users.forEach(user => {
-        const initials = getInitials(user.username);
-        const userItem = document.createElement("li");
-        userItem.classList.add("card", "user");
+    try {
+        // users.slice(0, 27).forEach(user => {
+        users.forEach(user => {
+            const initials = getInitials(user.username);
+            const userItem = document.createElement("li");
+            userItem.classList.add("card", "user");
 
-        userItem.innerHTML = `
-        <div class="swipe-delete">Delete</div>
-        <div class="swipe-content">
-            <span class="item-id">${user.user_id}</span>
-            <div class="profile-picture">
-                <span>${initials}</span>
-            </div>
-            <div class="user-data">
-                <span class="user-name">${user.username}</span>
-                <span class="user-email">${user.email}</span>
-            </div>
-            <div id="user-role">
-                <div class="user-tag" id="card-um${getRoleNumber(user.role)}">
-                    <img class="user-tag-logo" src="./assets/icons/userRoleIcon${getRoleNumber(user.role)}.svg" alt="tag">
-                    <span id="text-um${getRoleNumber(user.role)}" class="user-tag-text">${enumToDisplay(user.role)}</span>
+            userItem.innerHTML = `
+            <div class="swipe-delete">Delete</div>
+            <div class="swipe-content">
+                <span class="item-id">${user.user_id}</span>
+                <div class="profile-picture">
+                    <span>${initials}</span>
                 </div>
-                <object id="change-role" src="./assets/icons/change-role.svg" alt="change role"></object>
+                <div class="user-data">
+                    <span class="user-name">${user.username}</span>
+                    <span class="user-email">${user.email}</span>
+                </div>
+                <div class="user-role">
+                    <div class="user-tag card-um${getRoleNumber(user.role)}">
+                        <img class="user-tag-logo" src="./assets/icons/userRoleIcon${getRoleNumber(user.role)}.svg" alt="tag">
+                        <span class="user-tag-text text-um${getRoleNumber(user.role)}">${enumToDisplay(user.role)}</span>
+                    </div>
+                    <img class="change-role" src="./assets/icons/change-role.svg" alt="change role">
+                </div>
             </div>
-        </div>
-        `;
+            `;
 
-        userListContainer.appendChild(userItem);
-    });
+            userListContainer.appendChild(userItem);
+        });
+        } catch (e) {
+            console.error("Failed to create user list: ERROR_CODE:", e);
+        }
 
     // Update the total users count
     renderTotalUsers();
@@ -578,7 +596,7 @@ async function renderUserList() {
     }
 
     // add eventlistener for change role button
-    const changeRoleButtons = document.querySelectorAll("#change-role");
+    const changeRoleButtons = document.querySelectorAll(".change-role");
     changeRoleButtons.forEach(button => {
         button.addEventListener("click", changeUserRole);
     });
